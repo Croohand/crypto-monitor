@@ -1,27 +1,32 @@
 package fetchers
 
 import (
-	"errors"
+	"fmt"
+	"time"
 )
 
-func GetMarkets() []string {
-	markets := make([]string, 0, len(fetchers))
+func GetAvailableMarkets() []Market {
+	markets := make([]Market, 0, len(fetchers))
 	for market := range fetchers {
 		markets = append(markets, market)
 	}
 	return markets
 }
 
-func FetchRates(market string, symbols []string) (map[string]string, error) {
+func FetchRates(market Market, symbols []string) (map[string]string, error) {
 	fetcher := fetchers[market]
 	if fetcher == nil {
-		return nil, errors.New("No fetcher available for market " + market)
+		return nil, fmt.Errorf("No fetcher available for market %s", market)
 	}
 	return fetcher.fetch(symbols)
 }
+
+const defaultTimeout = time.Duration(5 * time.Second)
 
 type fetcher interface {
 	fetch(symbols []string) (map[string]string, error)
 }
 
-var fetchers = map[string]fetcher{}
+var fetchers = map[Market]fetcher{
+	Binance: newBinanceFetcher(),
+}
