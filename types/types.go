@@ -1,6 +1,7 @@
 package types
 
 import (
+	"encoding/json"
 	"regexp"
 	"time"
 )
@@ -15,18 +16,31 @@ type Rate struct {
 	From, To string
 }
 
+func (r Rate) Symbol() string {
+	return r.From + "/" + r.To
+}
+
 type RateInfo struct {
 	Rate
 	Price   string
 	Updated time.Time
 }
 
-func NewRateInfo(rate Rate, price string) RateInfo {
-	return RateInfo{
+func NewRateInfo(rate Rate, price string) *RateInfo {
+	return &RateInfo{
 		Rate:    rate,
 		Price:   price,
 		Updated: time.Now(),
 	}
+}
+
+func (ri RateInfo) Marshal() []byte {
+	data, _ := json.Marshal(ri)
+	return data
+}
+
+func (ri *RateInfo) Unmarshal(data []byte) error {
+	return json.Unmarshal(data, ri)
 }
 
 func CanParse(symbol string) bool {

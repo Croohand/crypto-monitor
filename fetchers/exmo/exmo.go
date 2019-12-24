@@ -32,7 +32,7 @@ func New() fetcher {
 	}
 }
 
-func (f fetcher) Fetch(rates []types.Rate) ([]types.RateInfo, error) {
+func (f fetcher) Fetch(rates []types.Rate) ([]*types.RateInfo, error) {
 	resp, err := f.client.Get(apiLink)
 	if err != nil {
 		return nil, fmt.Errorf("Fetch %s rates: %w", markets.Exmo, err)
@@ -51,7 +51,7 @@ func (f fetcher) Fetch(rates []types.Rate) ([]types.RateInfo, error) {
 		}
 	}
 
-	ratesNeeded := []types.RateInfo{}
+	ratesNeeded := []*types.RateInfo{}
 	for _, rate := range rates {
 		symbol := rate.From + "_" + rate.To
 		if _, ok := allRates[symbol]; ok {
