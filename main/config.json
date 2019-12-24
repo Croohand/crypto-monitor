@@ -1,0 +1,8 @@
+{
+    "ListenAddr": "localhost:11000",
+    "DbPath": "rates.db",
+    "RatesUpdateFreq": 10,
+    "ObservedSymbols": [
+        "ETH/bTC" 
+    ]
+}
