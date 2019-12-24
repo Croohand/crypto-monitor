@@ -4,7 +4,7 @@ import (
 	"fmt"
 
 	. "github.com/Croohand/crypto-monitor/markets"
-	"github.com/Croohand/crypto-monitor/types"
+	. "github.com/Croohand/crypto-monitor/types"
 
 	"github.com/Croohand/crypto-monitor/fetchers/binance"
 	"github.com/Croohand/crypto-monitor/fetchers/exmo"
@@ -18,7 +18,7 @@ func GetAvailableMarkets() []Market {
 	return markets
 }
 
-func FetchRates(market Market, rates []types.Rate) ([]*types.RateInfo, error) {
+func FetchRates(market Market, rates []Rate) (MarketRates, error) {
 	fetcher := fetchers[market]
 	if fetcher == nil {
 		return nil, fmt.Errorf("No fetcher available for market %s", market)
@@ -27,7 +27,7 @@ func FetchRates(market Market, rates []types.Rate) ([]*types.RateInfo, error) {
 }
 
 type fetcher interface {
-	Fetch(rates []types.Rate) ([]*types.RateInfo, error)
+	Fetch(rates []Rate) (MarketRates, error)
 }
 
 var fetchers = map[Market]fetcher{

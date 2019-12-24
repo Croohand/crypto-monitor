@@ -3,8 +3,8 @@ package ratesbase
 import (
 	"fmt"
 
-	"github.com/Croohand/crypto-monitor/markets"
-	"github.com/Croohand/crypto-monitor/types"
+	. "github.com/Croohand/crypto-monitor/markets"
+	. "github.com/Croohand/crypto-monitor/types"
 
 	bolt "go.etcd.io/bbolt"
 )
@@ -21,8 +21,8 @@ func Close() error {
 	return db.Close()
 }
 
-func Get(market markets.Market, rate types.Rate) (*types.RateInfo, error) {
-	rateInfo := new(types.RateInfo)
+func Get(market Market, rate Rate) (RateInfo, error) {
+	var rateInfo RateInfo
 	err := db.View(func(tx *bolt.Tx) error {
 		b := tx.Bucket([]byte(market))
 		if b == nil {
@@ -33,12 +33,12 @@ func Get(market markets.Market, rate types.Rate) (*types.RateInfo, error) {
 	return rateInfo, err
 }
 
-func Set(market markets.Market, rateInfo *types.RateInfo) error {
+func Set(market Market, rate Rate, rateInfo RateInfo) error {
 	return db.Update(func(tx *bolt.Tx) error {
 		b, err := tx.CreateBucketIfNotExists([]byte(market))
 		if err != nil {
 			return err
 		}
-		return b.Put([]byte(rateInfo.Symbol()), rateInfo.Marshal())
+		return b.Put([]byte(rate.Symbol()), rateInfo.Marshal())
 	})
 }

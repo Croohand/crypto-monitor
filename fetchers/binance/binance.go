@@ -5,9 +5,10 @@ import (
 	"net/http"
 	"time"
 
+	. "github.com/Croohand/crypto-monitor/markets"
+	. "github.com/Croohand/crypto-monitor/types"
+
 	"github.com/Croohand/crypto-monitor/helpers"
-	"github.com/Croohand/crypto-monitor/markets"
-	"github.com/Croohand/crypto-monitor/types"
 )
 
 const apiLink = "https://api.binance.com/api/v3/ticker/price"
@@ -27,15 +28,15 @@ func New() fetcher {
 	}
 }
 
-func (f fetcher) Fetch(rates []types.Rate) ([]*types.RateInfo, error) {
+func (f fetcher) Fetch(rates []Rate) (MarketRates, error) {
 	resp, err := f.client.Get(apiLink)
 	if err != nil {
-		return nil, fmt.Errorf("Fetch %s rates: %w", markets.Binance, err)
+		return nil, fmt.Errorf("Fetch %s rates: %w", Binance, err)
 	}
 	var allRatesList response
 	err = helpers.ParseHttp(resp, &allRatesList)
 	if err != nil {
-		return nil, fmt.Errorf("Parse %s result: %w", markets.Binance, err)
+		return nil, fmt.Errorf("Parse %s result: %w", Binance, err)
 	}
 
 	allRates := make(map[string]string)
@@ -43,19 +44,16 @@ func (f fetcher) Fetch(rates []types.Rate) ([]*types.RateInfo, error) {
 		allRates[rate["symbol"]] = rate["price"]
 	}
 
-	ratesNeeded := []*types.RateInfo{}
+	ratesNeeded := MarketRates{}
 	for _, rate := range rates {
 		symbol := rate.From + rate.To
 		if allRates[symbol] != "" {
-			ratesNeeded = append(ratesNeeded, types.NewRateInfo(
-				rate,
-				allRates[symbol],
-			))
+			ratesNeeded[rate] = NewRateInfo(allRates[symbol])
 		}
 	}
 
 	if len(ratesNeeded) == 0 {
-		return nil, fmt.Errorf("Empty rates list for %s", markets.Binance)
+		return nil, fmt.Errorf("Empty rates list for %s", Binance)
 	}
 	return ratesNeeded, nil
 }

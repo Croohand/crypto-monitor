@@ -20,29 +20,6 @@ func (r Rate) Symbol() string {
 	return r.From + "/" + r.To
 }
 
-type RateInfo struct {
-	Rate
-	Price   string
-	Updated time.Time
-}
-
-func NewRateInfo(rate Rate, price string) *RateInfo {
-	return &RateInfo{
-		Rate:    rate,
-		Price:   price,
-		Updated: time.Now(),
-	}
-}
-
-func (ri RateInfo) Marshal() []byte {
-	data, _ := json.Marshal(ri)
-	return data
-}
-
-func (ri *RateInfo) Unmarshal(data []byte) error {
-	return json.Unmarshal(data, ri)
-}
-
 func CanParse(symbol string) bool {
 	return rateSymbolRegexp.MatchString(symbol)
 }
@@ -57,3 +34,26 @@ func ParseRates(symbols []string) []Rate {
 	}
 	return rates
 }
+
+type RateInfo struct {
+	Price   string
+	Updated time.Time
+}
+
+func NewRateInfo(price string) RateInfo {
+	return RateInfo{
+		Price:   price,
+		Updated: time.Now(),
+	}
+}
+
+func (ri RateInfo) Marshal() []byte {
+	data, _ := json.Marshal(ri)
+	return data
+}
+
+func (ri *RateInfo) Unmarshal(data []byte) error {
+	return json.Unmarshal(data, ri)
+}
+
+type MarketRates map[Rate]RateInfo

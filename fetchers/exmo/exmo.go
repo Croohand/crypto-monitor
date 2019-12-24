@@ -5,9 +5,10 @@ import (
 	"net/http"
 	"time"
 
+	. "github.com/Croohand/crypto-monitor/markets"
+	. "github.com/Croohand/crypto-monitor/types"
+
 	"github.com/Croohand/crypto-monitor/helpers"
-	"github.com/Croohand/crypto-monitor/markets"
-	"github.com/Croohand/crypto-monitor/types"
 )
 
 const apiLink = "https://api.exmo.com/v1/ticker/"
@@ -32,15 +33,15 @@ func New() fetcher {
 	}
 }
 
-func (f fetcher) Fetch(rates []types.Rate) ([]*types.RateInfo, error) {
+func (f fetcher) Fetch(rates []Rate) (MarketRates, error) {
 	resp, err := f.client.Get(apiLink)
 	if err != nil {
-		return nil, fmt.Errorf("Fetch %s rates: %w", markets.Exmo, err)
+		return nil, fmt.Errorf("Fetch %s rates: %w", Exmo, err)
 	}
 	var allRatesInfo response
 	err = helpers.ParseHttp(resp, &allRatesInfo)
 	if err != nil {
-		return nil, fmt.Errorf("Parse %s result: %w", markets.Exmo, err)
+		return nil, fmt.Errorf("Parse %s result: %w", Exmo, err)
 	}
 
 	allRates := make(map[string]partialRateInfo)
@@ -51,21 +52,18 @@ func (f fetcher) Fetch(rates []types.Rate) ([]*types.RateInfo, error) {
 		}
 	}
 
-	ratesNeeded := []*types.RateInfo{}
+	ratesNeeded := MarketRates{}
 	for _, rate := range rates {
 		symbol := rate.From + "_" + rate.To
 		if _, ok := allRates[symbol]; ok {
-			rateInfo := types.NewRateInfo(
-				rate,
-				allRates[symbol].price,
-			)
+			rateInfo := NewRateInfo(allRates[symbol].price)
 			rateInfo.Updated = allRates[symbol].updated
-			ratesNeeded = append(ratesNeeded, rateInfo)
+			ratesNeeded[rate] = rateInfo
 		}
 	}
 
 	if len(ratesNeeded) == 0 {
-		return nil, fmt.Errorf("Empty rates list for %s", markets.Exmo)
+		return nil, fmt.Errorf("Empty rates list for %s", Exmo)
 	}
 	return ratesNeeded, nil
 }
