@@ -29,4 +29,5 @@ type fetcher interface {
 
 var fetchers = map[Market]fetcher{
 	Binance: newBinanceFetcher(),
+	Exmo:    newExmoFetcher(),
 }
