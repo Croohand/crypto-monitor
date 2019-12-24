@@ -3,6 +3,8 @@
     "DbPath": "rates.db",
     "RatesUpdateFreq": 10,
     "ObservedSymbols": [
-        "ETH/bTC" 
+        "ETH/BTC",
+        "BTC/USDT", 
+        "BTC/ETH"
     ]
 }
