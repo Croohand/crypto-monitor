@@ -1,4 +1,4 @@
-package fetchers
+package helpers
 
 import (
 	"encoding/json"
@@ -8,7 +8,7 @@ import (
 )
 
 // JSON format
-func parseHttp(r *http.Response, dst interface{}) error {
+func ParseHttp(r *http.Response, dst interface{}) error {
 	defer r.Body.Close()
 	bytes, err := ioutil.ReadAll(r.Body)
 	if err != nil {

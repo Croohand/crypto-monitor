@@ -2,7 +2,12 @@ package fetchers
 
 import (
 	"fmt"
-	"time"
+
+	. "github.com/Croohand/crypto-monitor/markets"
+	"github.com/Croohand/crypto-monitor/types"
+
+	"github.com/Croohand/crypto-monitor/fetchers/binance"
+	"github.com/Croohand/crypto-monitor/fetchers/exmo"
 )
 
 func GetAvailableMarkets() []Market {
@@ -13,21 +18,19 @@ func GetAvailableMarkets() []Market {
 	return markets
 }
 
-func FetchRates(market Market, symbols []string) (map[string]string, error) {
+func FetchRates(market Market, rates []types.Rate) ([]types.RateInfo, error) {
 	fetcher := fetchers[market]
 	if fetcher == nil {
 		return nil, fmt.Errorf("No fetcher available for market %s", market)
 	}
-	return fetcher.fetch(symbols)
+	return fetcher.Fetch(rates)
 }
 
-const defaultTimeout = time.Duration(5 * time.Second)
-
 type fetcher interface {
-	fetch(symbols []string) (map[string]string, error)
+	Fetch(rates []types.Rate) ([]types.RateInfo, error)
 }
 
 var fetchers = map[Market]fetcher{
-	Binance: newBinanceFetcher(),
-	Exmo:    newExmoFetcher(),
+	Binance: binance.New(),
+	Exmo:    exmo.New(),
 }

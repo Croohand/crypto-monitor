@@ -1,4 +1,4 @@
-package fetchers
+package markets
 
 type Market string
 
