@@ -3,7 +3,7 @@ package exmo
 import (
 	"testing"
 
-	. "github.com/Croohand/crypto-monitor/types"
+	. "github.com/Croohand/crypto-monitor/lib/types"
 )
 
 func TestExmoFetch(t *testing.T) {

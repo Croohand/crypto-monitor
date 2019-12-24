@@ -3,8 +3,8 @@ package ratesbase
 import (
 	"fmt"
 
-	. "github.com/Croohand/crypto-monitor/markets"
-	. "github.com/Croohand/crypto-monitor/types"
+	. "github.com/Croohand/crypto-monitor/lib/markets"
+	. "github.com/Croohand/crypto-monitor/lib/types"
 
 	bolt "go.etcd.io/bbolt"
 )

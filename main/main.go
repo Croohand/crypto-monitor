@@ -5,7 +5,7 @@ import (
 	"log"
 
 	"github.com/Croohand/crypto-monitor/config"
-	"github.com/Croohand/mapreduce/slave/server"
+	"github.com/Croohand/crypto-monitor/server"
 )
 
 func main() {
@@ -22,5 +22,5 @@ func main() {
 
 	log.Printf("Starting service with config %#v\n", cfg)
 
-	err := server.Run(cfg)
+	log.Fatalf("Service is down: %v\n", server.Run(cfg))
 }

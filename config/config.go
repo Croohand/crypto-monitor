@@ -6,7 +6,7 @@ import (
 	"log"
 	"os"
 
-	"github.com/Croohand/crypto-monitor/types"
+	"github.com/Croohand/crypto-monitor/lib/types"
 )
 
 type ServiceConfig struct {

@@ -3,11 +3,11 @@ package fetchers
 import (
 	"fmt"
 
-	. "github.com/Croohand/crypto-monitor/markets"
-	. "github.com/Croohand/crypto-monitor/types"
+	. "github.com/Croohand/crypto-monitor/lib/markets"
+	. "github.com/Croohand/crypto-monitor/lib/types"
 
-	"github.com/Croohand/crypto-monitor/fetchers/binance"
-	"github.com/Croohand/crypto-monitor/fetchers/exmo"
+	"github.com/Croohand/crypto-monitor/lib/fetchers/binance"
+	"github.com/Croohand/crypto-monitor/lib/fetchers/exmo"
 )
 
 func GetAvailableMarkets() []Market {

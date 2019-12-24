@@ -5,10 +5,10 @@ import (
 	"net/http"
 	"time"
 
-	. "github.com/Croohand/crypto-monitor/markets"
-	. "github.com/Croohand/crypto-monitor/types"
+	. "github.com/Croohand/crypto-monitor/lib/markets"
+	. "github.com/Croohand/crypto-monitor/lib/types"
 
-	"github.com/Croohand/crypto-monitor/helpers"
+	"github.com/Croohand/crypto-monitor/lib/helpers"
 )
 
 const apiLink = "https://api.binance.com/api/v3/ticker/price"

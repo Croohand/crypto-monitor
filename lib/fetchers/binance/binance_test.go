@@ -3,7 +3,7 @@ package binance
 import (
 	"testing"
 
-	. "github.com/Croohand/crypto-monitor/types"
+	. "github.com/Croohand/crypto-monitor/lib/types"
 )
 
 func TestBinanceFetch(t *testing.T) {
