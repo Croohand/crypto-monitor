@@ -23,7 +23,7 @@ func Run(cfg config.ServiceConfig) error {
 
 	routes()
 
-	return http.ListenAndServe(cfg.ListenAddr, nil)
+	return http.ListenAndServe(":80", nil)
 }
 
 func routes() {

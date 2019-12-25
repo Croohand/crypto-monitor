@@ -10,7 +10,6 @@ import (
 )
 
 type ServiceConfig struct {
-	ListenAddr      string
 	DbPath          string
 	RatesUpdateFreq int
 	ObservedSymbols []string
@@ -19,10 +18,6 @@ type ServiceConfig struct {
 func (cfg ServiceConfig) Check() {
 	if cfg.DbPath == "" {
 		log.Fatal("Empty DbPath in config")
-	}
-
-	if cfg.ListenAddr == "" {
-		log.Fatal("Empty ListenAddr in config")
 	}
 
 	if cfg.RatesUpdateFreq == 0 {
